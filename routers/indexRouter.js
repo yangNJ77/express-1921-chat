@@ -12,6 +12,10 @@ router.get('/',(req,res) =>{
 router.get('/chatroom',auth,(req,res) =>{
     res.render("chatroom");   
 });
+//  GET /posts  聊天页面
+router.get('/posts',auth,(req,res) =>{
+    res.render("post/index");   
+});
 //  GET /login  登录页面
 router.get('/login',(req,res) =>{
     res.render("login")

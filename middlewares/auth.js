@@ -6,7 +6,11 @@ module.exports=(req,res,next) => {
         
         next();
     } else {
-        //没有登录 直接打回到登录页面
+        //没有登录 
+        // 将当前的url地址 给存到session中
+        console.log(req.url);
+        req.session.redirect = req.url;
+        //直接打回到登录页面
         res.redirect("/login");
     }
 }
