@@ -18,6 +18,12 @@ router.post('/login', async(req,res) =>{
     //校验密码是否正确
     if(user.comparePassword(password)){
         //通过 就可以登录 
+         // 给 req.session 上添加一个 auth 属性，auth 属性里保存当前用户的ID和username等信息
+         // 后续判断用户是否登录，只需要去判断 req.session 中有没有 auth 这个属性即可
+        req.session.auth = {
+            userId: user._id,
+            username: user.username
+        };
         res.send("登录成功");
     } else {
         //不通过 用户名或密码不正确
