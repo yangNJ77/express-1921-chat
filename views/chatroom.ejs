@@ -22,21 +22,19 @@
                 <div id="messages" class="mb-4"
                   style="height: 300px; overflow-y: auto; border: 1px solid #000;border-radius: 5px; padding: 10px;background-color: aquamarine">
         
-                  <div class="my-4 d-flex">
+                  <!-- <div class="my-4 d-flex">
                     <div class="mr-2">
                       <small class="text-black-50">张三：</small>
                     </div>
                     <div>
                       hello
                     </div>
-                  </div> 
+                  </div>  -->
         
-                   <div class="my-4 d-flex justify-content-end">
-                    <div class="mr-2">
-                      <small class="text-black-50">我：</small>
-                    </div>
+                   <!-- <div class="my-4 d-flex justify-content-end">
+                    
                     <div>hello</div>
-                  </div>
+                  </div> -->
         
                 </div>
               </div>
@@ -52,5 +50,73 @@
 
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <!-- 引入 socketio 的客户端js文件 -->
+    <script src="/assets/lib/socket.io.js"></script>
+    <script>
+          $(function () {
+             //建立socketio的连接
+             const socket = io("http://localhost:3000")
+        
+             //触发 setName 这个事件
+             //不能写死名字  需要如何获取当前登录的用户的username呢
+             //从seeeion中拿出来 但是前端 是直接获取不了session
+             //在渲染这个页面时   可以通过模板变量将用户名给带到页面来
+
+             socket.emit('setName','<%- username %>')
+             
+
+             //监听 message 这个服务端触发的事件
+             socket.on('message',(data) =>{
+              //data { username:xxx, message:yyy}
+                
+              //直接追加到 messages 这个元素中
+
+              //判断时自己的消息还是别人发的消息
+              if(data.username === '<%- username %>'){
+                //自己发的
+                $('#messages').append(`
+                  <div class="my-4 d-flex justify-content-end">
+                    
+                    <div> ${data.message}</div>
+                   </div>
+                `)
+              } else {
+                // 其他
+                $('#messages').append(`
+                <div class="my-4 d-flex">
+                    <div class="mr-2">
+                      <small class="text-black-50">${data.username}:</small>
+                    </div>
+                    <div>
+                      ${data.message}
+                    </div>
+                  </div> 
+                `)
+              }
+               //让messages 元素的滚动条一直处于最底部
+               $('#messages').stop().animate({
+                  scrollTop: $('#messages').height() + $('#messages').scrollTop()
+                }, 'slow')
+             })
+            // 监听 btn 按钮的点击事件  发消息
+            $('#btn').click(function (){
+              //获取value
+              var value = $('#value').val()
+              //判断
+              if(!value) return
+              // 触发服务器的 message 事件
+              socket.emit("message",{
+                message:value
+              })
+            })
+
+          })
+    
+    
+    </script>
+          
+           
+    
+    
 </body>
 </html>

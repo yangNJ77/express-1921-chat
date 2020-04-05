@@ -8,11 +8,11 @@ router.get('/',(req,res) =>{
 
     res.render("welcome")
 });
-//  GET /chatroom  聊天页面
-router.get('/chatroom',auth,(req,res) =>{
-    res.render("chatroom");   
-});
-//  GET /posts  聊天页面
+// GET /chatroom 聊天室页面
+router.get("/chatroom", auth, (req, res) => {
+    res.render("chatroom",{ username: req.auth.username });
+  });
+//  GET /posts  帖子列表页面
 router.get('/posts',auth,(req,res) =>{
     res.render("post/index");   
 });

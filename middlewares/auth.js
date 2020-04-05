@@ -8,9 +8,9 @@ module.exports=(req,res,next) => {
     } else {
         //没有登录 
         // 将当前的url地址 给存到session中
-        console.log(req.url);
+        // console.log(req.url);
         req.session.redirect = req.url;
         //直接打回到登录页面
-        res.redirect("/login");
+        res.redirect("/login"); 
     }
 }

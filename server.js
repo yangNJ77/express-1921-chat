@@ -1,5 +1,7 @@
 //引入 express
 const express =require("express");
+//引入 socket.io
+const socketIo = require("socket.io")
 //引入 express-async-error
 require("express-async-errors");
 // 引入 express-session 中间件模块
@@ -50,3 +52,41 @@ app.use((err,req,res,next) =>{
 const server= app.listen(3000, ()=>{
     console.log("服务启动成功")
 });
+
+//通过 sockectIo.listen 去与当前服务关联上
+const io = socketIo.listen(server);
+
+// 建立 io 的 connection 事件去处理客户端连接
+io.on("connection", socket => {
+    // 提供一个事件将做 setName 。供客户端去设置名字
+    // 客户端连接到服务之后，第一个要做的事情就是调用（触发） setName 这个事件
+    socket.on("setName", username => {
+      // 给当前socket添加一个名字，值就是传递过来的username
+    socket.username = username;
+  
+      // 给其它人发送一个系统消息，xxx加入聊天室
+      socket.broadcast.emit("message", {
+        // username 代表谁说的
+        username: "System",
+        // message 代表说的内容
+        message: `欢迎${socket.username}加入聊天室`
+      });
+    });
+
+    // 监听 message 事件  这个事件有客户端触发
+    socket.on('message',(data) => {
+      // data { message:value}
+      // 转给当前客户端
+      socket.emit("message", {
+        username:socket.username,
+        message:data.message
+      });
+      //收到消息后  转发给其他客户端
+      socket.broadcast.emit("message", {
+        // username 代表谁说的
+        username:socket.username,
+        // message 代表说的内容
+        message:data.message
+      });
+    })
+})

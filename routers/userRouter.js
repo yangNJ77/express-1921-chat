@@ -29,7 +29,7 @@ router.post('/login', async(req,res) =>{
         let redirect = req.session.redirect || '/'
         //获取到地址 做跳转
         res.redirect(redirect);
-        res.send("登录成功");
+       
     } else {
         //不通过 用户名或密码不正确
         throw new Error("用户名或密码不正确");  //异常处理
