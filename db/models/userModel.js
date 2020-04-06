@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     username:{ type: String, require:true},
     password:{ type: String, require:true},
 
-    avater:{ type:String, default:"http://129.204.188.122:3000/assats/img/01.jpg"}
+    avater:{ type:String, default:`${process.env.BASEURL}/assats/img/01.jpg`}
 
 })
 

@@ -1,5 +1,9 @@
 //引入 express
 const express =require("express");
+//引入 dotenv
+const dotenv = require("dotenv");
+//配置 dotenv
+dotenv.config();
 //引入 socket.io
 const socketIo = require("socket.io")
 //引入 express-async-error
@@ -90,3 +94,4 @@ io.on("connection", socket => {
       });
     })
 })
+// console.log(process.env.BASEURL)
