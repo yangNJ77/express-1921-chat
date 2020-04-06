@@ -20,7 +20,7 @@
             <div class="row">
               <div class="col-md-6 mx-auto">
                 <div id="messages" class="mb-4"
-                  style="height: 300px; overflow-y: auto; border: 1px solid #000;border-radius: 5px; padding: 10px;background-color: aquamarine">
+                  style="height: 300px; overflow-y: auto; border: 1px solid #000;border-radius: 5px; padding: 10px;">
         
                   <!-- <div class="my-4 d-flex">
                     <div class="mr-2">
@@ -55,7 +55,7 @@
     <script>
           $(function () {
              //建立socketio的连接
-             const socket = io("http://localhost:3000")
+             const socket = io()
         
              //触发 setName 这个事件
              //不能写死名字  需要如何获取当前登录的用户的username呢
